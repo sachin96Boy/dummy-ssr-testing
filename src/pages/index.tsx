@@ -1,12 +1,16 @@
+import fs from "fs";
+import path from "path";
+
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Box, UnorderedList, ListItem } from "@chakra-ui/react";
 
 type itemType = {
   id: number;
-  name: string;
   price: number;
-  type: string;
+  name: string;
+  description: string;
+  category: string;
 };
 
 type PropType = {
@@ -28,7 +32,7 @@ const Home: NextPage = (props: PropType) => {
             {products.map((product: itemType) => {
               return (
                 <ListItem key={product.id}>
-                  {product.name} - {product.price}
+                  {product.name} - {product.price} - {product.category} 
                 </ListItem>
               );
             })}
@@ -40,16 +44,15 @@ const Home: NextPage = (props: PropType) => {
 };
 
 export async function getStaticProps() {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
+  const jsonData = fs.readFileSync(filePath);
+  const data: PropType = JSON.parse(jsonData);
   return {
     props: {
       // props for your component
-      products: [
-        {
-          id: 1,
-          name: "Product 1",
-          price: 100,
-        },
-      ],
+      products: data.products,
     }, // will be passed to the page component as props
   };
 }

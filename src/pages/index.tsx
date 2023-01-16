@@ -53,7 +53,8 @@ export async function getStaticProps() {
     props: {
       // props for your component
       products: data.products,
-    }, // will be passed to the page component as props
+    },
+    revalidate: 120 // rerun process to get the latest updates on sertver side
   };
 }
 

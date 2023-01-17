@@ -49,6 +49,22 @@ export async function getStaticProps() {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = fs.readFileSync(filePath);
   const data: PropType = JSON.parse(jsonData);
+
+  if(!data) {
+    return {
+      redirect: {
+        destination: '/no-data',
+        permanent: false,
+      },
+    }
+  }
+
+  if(data.products.length === 0) {
+    return {
+      notFound: true,
+    }
+  }
+
   return {
     props: {
       // props for your component
